@@ -291,6 +291,21 @@ body {
     width: 90%;
   }
 
+
+  .one {
+    font-size: 2.2rem;   /* smaller Hey Angela text */
+    line-height: 1.2;
+    padding: 0 10px;     /* stops edge clipping */
+  }
+
+  #name {
+    display: inline-block;
+    word-break: keep-all; /* prevents weird split like Angel + a */
+  }
+
+
+
+
   .four .text-box {
     width: 90%;
   }
@@ -448,4 +463,35 @@ body {
 body.hacked {
   background: #ffd6e7;   /* soft valentine pink */
   transition: background 1.2s ease;
+}
+/* ===== Fake typing animation ===== */
+#wishText {
+  overflow: hidden;
+  white-space: pre-line;
+  border-right: 2px solid #4245ff;   /* cursor */
+  width: 0;
+  animation:
+    typing 3s steps(40, end) forwards,
+    blink 0.8s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink {
+  50% { border-color: transparent }
+}
+/* ===== Final screen GIFs ===== */
+.final-gifs {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.final-gifs img {
+  width: 120px;
+  border-radius: 12px;
 }

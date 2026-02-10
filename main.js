@@ -20,11 +20,10 @@ function playFireworks() {
     {
       opacity: 0,
       scale: 80,
-      repeat: 3,
-      repeatDelay: 0.3,
+      repeat: 1,
       ease: Expo.easeOut,
     },
-    0.3
+     0.05 
   );
 }
 
@@ -73,11 +72,10 @@ tl.set(".nine", { opacity: 0 });
   // 👇 SHOW SYSTEM MESSAGE FIRST
 .from("#wishText", 0.7, {
   opacity:0,
-  y:20
+  
 })
 .to("#wishText", 0.7, {
   opacity:0,
-  y:-20
 }, "+=2")
 
     .from(".one", 0.7, {
@@ -176,15 +174,21 @@ tl.set(".nine", { opacity: 0 });
       },
       "+=0.5"
     )
-    .to(
-      ".idea-5 span",
-      0.7,
-      {
-        rotation: 90,
-        x: 8,
-      },
-      "+=0.4"
-    )
+    
+// 👇 add THIS line right after the .from(".idea-5"...)
+.set(".idea-5 span", { rotationY: -180, opacity: 0 })
+
+// 👇 soft card flip
+.to(
+  ".idea-5 span",
+  0.8,
+  {
+    rotationY: 0,
+    opacity: 1,
+    ease: Back.easeOut.config(1.2)
+  },
+  "+=0.2"
+)
     .to(
       ".idea-5",
       0.7,
@@ -331,7 +335,18 @@ tl.set(".nine", { opacity: 0 });
 .call(() => {
   // 👇 SHOW BUTTONS ONLY WHEN NEEDED
   const btns = document.querySelector(".val-buttons");
-  if (btns) btns.classList.remove("hidden");
+  if (!btns) return;
+
+  btns.classList.remove("hidden");
+
+  // 👇 glide-up animation
+  TweenMax.staggerFromTo(
+  ".val-buttons button",
+  1,
+  { y: 30, opacity: 0 },
+  { y: 0, opacity: 1, ease: Power2.easeOut },
+  0.15
+);
 
 })
 
@@ -347,14 +362,9 @@ tl.set(".nine", { opacity: 0 });
     .to(".nine", 0, { opacity: 1 })
 
     .staggerFrom(".nine p", 1, ideaTextTrans, 1.2)
-    .to(
-      ".last-smile",
-      0.5,
-      {
-        rotation: 90,
-      },
-      "+=1"
-    );
+    .from(".final-gifs img", 0.6, { opacity:0, y:20, stagger:0.2 })
+
+    
 
   // tl.seek("currentStep");
   // tl.timeScale(2);
@@ -385,13 +395,20 @@ TweenMax.set(".girl-dp", { clearProps: "all" });
 TweenMax.set(".six", { clearProps: "all" });
 TweenMax.set(".one, .two, .three, .four, .five, .seven", { clearProps: "all" });
   // 1) reset audios
+  robotAmbience.pause();
+  robotAmbience.currentTime = 0;
+  staticSound.pause();
+  staticSound.currentTime = 0;
+  
+
+
   loveSong.pause();
   loveSong.currentTime = 0;
   loveSong.volume = 0.6;
 
   bestPart.pause();
   bestPart.currentTime = 0;
-  bestPart.volume = 0.0;
+  bestPart.volume = 1.0;
 
   // 2) reset valentine buttons + response
   const btns = document.querySelector(".val-buttons");
@@ -423,12 +440,14 @@ TweenMax.set(".one, .two, .three, .four, .five, .seven", { clearProps: "all" });
   sys.style.transform = "";
 
   const wishHbd = document.querySelector(".wish-hbd");
-if (wishHbd) wishHbd.innerHTML = wishHbd.textContent; // remove the spans properly
+
 
 
 
   // restart animation
   tl.restart(true);
+  // start love song AFTER timeline resets
+loveSong.play().catch(()=>{});
 };
 
 };
@@ -464,7 +483,7 @@ resolveFetch();
 
 // ===== HACKER PASSWORD SYSTEM =====
 const robotAmbience = document.getElementById("robotAmbience");
-robotAmbience.volume = 0.25; // keep subtle
+robotAmbience.volume = 0.75; // keep subtle
 
 // ▶️ START HACKING MUSIC ON FIRST INTERACTION (like before)
 const startAudioOnce = () => {
