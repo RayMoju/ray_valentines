@@ -524,7 +524,7 @@ function fadeAudio(audio, target, ms = 800) {
 function tryAccess(){
   const val = hackInput.value.toLowerCase();
 
-  if(val === "myshayla"){
+  if(val === "shayla"){
 
     document.body.classList.add("hacked"); // ⭐ add this
     robotAmbience.pause();
